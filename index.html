@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Singapore PSI Readings</title>
+
+    <style>
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #eeeeee;
+    }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>Singapore PSI Readings</h1>
+
+    <p>Realtime PSI data from data.gov.sg</p>
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>Reading</th>
+                <th>Central</th>
+                <th>West</th>
+                <th>East</th>
+                <th>North</th>
+                <th>South</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="psi-table">
+
+        </tbody>
+
+    </table>
+
+<script>
+
+    const API_URL = "https://api-open.data.gov.sg/v2/real-time/api/psi";
+
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+
+            console.log(data);
+
+            const readings = data.data.items[0].readings;
+
+            const tableBody = document.getElementById("psi-table");
+
+            for (const readingName in readings) {
+
+                const values = readings[readingName];
+
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${readingName}</td>
+                    <td>${values.central}</td>
+                    <td>${values.west}</td>
+                    <td>${values.east}</td>
+                    <td>${values.north}</td>
+                    <td>${values.south}</td>
+                `;
+                
+                tableBody.appendChild(row);
+
+                console.log(readingName);
+
+            }
+
+            console.log(readings);
+
+        });
+
+</script>
+
+</body>
+
+</html>
